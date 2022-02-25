@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "MapItemPicker",
+    name: "SwiftUI-MapItemPicker",
     platforms: [
         .iOS(.v15),
         .macOS(.v12),
