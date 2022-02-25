@@ -1,4 +1,4 @@
-# MapItemPicker 🗺️
+# SwiftUI MapItemPicker 🗺️
 
 `MapItemPicker` is a location picker sheet. Currently supports only iOS and Mac Catalyst.
 
