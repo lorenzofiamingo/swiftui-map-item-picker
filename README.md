@@ -31,16 +31,16 @@ struct ContentView: View {
 ## Installation
 
 1. In Xcode, open your project and navigate to **File** → **Swift Packages** → **Add Package Dependency...**
-2. Paste the repository URL (`https://github.com/lorenzofiamingo/SwiftUI-MapItemPicker`) and click **Next**.
+2. Paste the repository URL (`https://github.com/lorenzofiamingo/swiftui-map-item-picker`) and click **Next**.
 3. Click **Finish**.
 
 
 ## Other projects
 
-[SwiftUI PhotosPicker 🌇](https://github.com/lorenzofiamingo/SwiftUI-PhotosPicker)
+[SwiftUI PhotosPicker 🌇](https://github.com/lorenzofiamingo/swiftui-photos-picker)
 
-[SwiftUI CachedAsyncImage 🗃️](https://github.com/lorenzofiamingo/SwiftUI-CachedAsyncImage)
+[SwiftUI CachedAsyncImage 🗃️](https://github.com/lorenzofiamingo/swiftui-cached-async-image)
 
-[SwiftUI VerticalTabView 🔝](https://github.com/lorenzofiamingo/SwiftUI-VerticalTabView)
+[SwiftUI VerticalTabView 🔝](https://github.com/lorenzofiamingo/swiftui-vertical-tab-view)
 
-[SwiftUI SharedObject 🍱](https://github.com/lorenzofiamingo/SwiftUI-SharedObject)
+[SwiftUI SharedObject 🍱](https://github.com/lorenzofiamingo/swiftui-shared-object)
