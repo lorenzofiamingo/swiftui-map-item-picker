@@ -37,6 +37,8 @@ struct ContentView: View {
 
 ## Other projects
 
+[SwiftUI PhotosPicker 🌇](https://github.com/lorenzofiamingo/SwiftUI-PhotosPicker)
+
 [CachedAsyncImage 🗃️](https://github.com/lorenzofiamingo/SwiftUI-CachedAsyncImage)
 
 [VerticalTabView 🔝](https://github.com/lorenzofiamingo/SwiftUI-VerticalTabView)
