@@ -52,15 +52,19 @@ extension SearchResponseTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: SearchResponseTableViewController.cellReuseID, for: indexPath)
-        if let response = searchResponse {
-            let mapItem = response.mapItems[indexPath.item]
-            var content = cell.defaultContentConfiguration()
-            content.text = mapItem.placemark.name
-            content.secondaryText = mapItem.placemark.title
-            cell.contentConfiguration = content
+        if #available(iOS 14.0, *) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: SearchResponseTableViewController.cellReuseID, for: indexPath)
+            if let response = searchResponse {
+                let mapItem = response.mapItems[indexPath.item]
+                var content = cell.defaultContentConfiguration()
+                content.text = mapItem.placemark.name
+                content.secondaryText = mapItem.placemark.title
+                cell.contentConfiguration = content
+            }
+            return cell
+        } else {
+            fatalError()
         }
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

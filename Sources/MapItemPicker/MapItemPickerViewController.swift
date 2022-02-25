@@ -11,6 +11,7 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
+@available(iOS 15.0, *)
 class MapItemPickerViewController:
     UIViewController,
     UISheetPresentationControllerDelegate,

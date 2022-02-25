@@ -10,6 +10,7 @@
 import SwiftUI
 import MapKit
 
+@available(iOS 15.0, *)
 extension View {
     public func mapItemPicker(
         isPresented: Binding<Bool>,

@@ -10,6 +10,7 @@
 import SwiftUI
 import MapKit
 
+@available(iOS 15.0, *)
 struct MapItemPickerSheet<Content: View>: View {
     
     @Binding var isPresented: Bool

@@ -69,25 +69,28 @@ extension SearchCompletionsTableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         "Suggestions"
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: SearchCompletionsTableViewController.cellReuseID, for: indexPath)
-        guard let completion = searchCompletions?[indexPath.item] else { return cell }
-        var content = cell.defaultContentConfiguration()
-        let text = NSMutableAttributedString(string: completion.title)
-        for value in completion.titleHighlightRanges {
-            text.setAttributes([.font: content.textProperties.font.bold()], range: value.rangeValue)
+        if #available(iOS 14.0, *) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: SearchCompletionsTableViewController.cellReuseID, for: indexPath)
+            guard let completion = searchCompletions?[indexPath.item] else { return cell }
+            var content = cell.defaultContentConfiguration()
+            let text = NSMutableAttributedString(string: completion.title)
+            for value in completion.titleHighlightRanges {
+                text.setAttributes([.font: content.textProperties.font.bold()], range: value.rangeValue)
+            }
+            content.attributedText = text
+            let secondaryText = NSMutableAttributedString(string: completion.subtitle)
+            for value in completion.subtitleHighlightRanges {
+                secondaryText.setAttributes([.font: content.secondaryTextProperties.font.bold()], range: value.rangeValue)
+            }
+            content.secondaryAttributedText = secondaryText
+            cell.contentConfiguration = content
+            cell.backgroundColor = .clear
+            return cell
+        } else {
+            fatalError()
         }
-        content.attributedText = text
-        let secondaryText = NSMutableAttributedString(string: completion.subtitle)
-        for value in completion.subtitleHighlightRanges {
-            secondaryText.setAttributes([.font: content.secondaryTextProperties.font.bold()], range: value.rangeValue)
-        }
-        content.secondaryAttributedText = secondaryText
-        cell.contentConfiguration = content
-        cell.backgroundColor = .clear
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
