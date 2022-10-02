@@ -30,7 +30,7 @@ struct ContentView: View {
 
 ## Installation
 
-1. In Xcode, open your project and navigate to **File** → **Swift Packages** → **Add Package Dependency...**
+1. In Xcode, open your project and navigate to **File** → **Add Packages...**
 2. Paste the repository URL (`https://github.com/lorenzofiamingo/swiftui-map-item-picker`) and click **Next**.
 3. Click **Finish**.
 
