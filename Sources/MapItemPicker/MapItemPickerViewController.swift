@@ -33,7 +33,9 @@ class MapItemPickerViewController:
         searchNavigationController.presentationController?.delegate = self
         if let sheet = searchNavigationController.sheetPresentationController {
 #if !targetEnvironment(macCatalyst)
-            sheet.prefersGrabberVisible = true
+            // Work-around to avoid memory leak.
+            // The grabber causes a _UIPageSheetPresentationController to prevent the presented view controller from being released after being dismissed.
+            //sheet.prefersGrabberVisible = true
 #endif
             sheet.delegate = self
             sheet.detents = [.medium(), .large()]
@@ -49,7 +51,8 @@ class MapItemPickerViewController:
     private lazy var searchCompletionsTableViewController: SearchCompletionsTableViewController = {
         let tableViewController = SearchCompletionsTableViewController(style: .plain)
         tableViewController.searchRegion = searchRegion
-        tableViewController.onCompletionSelection = { completion in
+        tableViewController.onCompletionSelection = { [weak self] completion in
+            guard let self else { return }
             self.searchResponseTableViewController.tableView.isHidden = false
             self.searchController.isActive = false
             self.searchController.searchBar.text = nil //[completion.title, completion.subtitle].joined(separator: ", ")
@@ -64,8 +67,8 @@ class MapItemPickerViewController:
             let searchRequest = MKLocalSearch.Request(completion: completion)
             searchRequest.region = self.searchRegion
             let search = MKLocalSearch(request: searchRequest)
-            search.start { (response, error) in
-                self.searchResponse = response
+            search.start { [weak self] (response, error) in
+                self?.searchResponse = response
             }
         }
         
@@ -80,7 +83,8 @@ class MapItemPickerViewController:
     
     private lazy var searchResponseTableViewController: SearchResponseTableViewController = {
         let tableViewController = SearchResponseTableViewController(style: .insetGrouped)
-        tableViewController.onMapItemSelection = { mapItemIndex in
+        tableViewController.onMapItemSelection = { [weak self] mapItemIndex in
+            guard let self else { return }
             self.selectedAnnotationIndex = mapItemIndex
             let annotation = self.annotations[mapItemIndex]
             if !self.mapView.annotations(in: self.mapView.visibleMapRect).contains(annotation as! AnyHashable) {
@@ -99,7 +103,8 @@ class MapItemPickerViewController:
         tableViewController.tableView.backgroundView = blurEffectView
         tableViewController.tableView.separatorEffect = UIVibrancyEffect(blurEffect: blurEffect)
         
-        tableViewController.onViewWillLayoutSubviews = {
+        tableViewController.onViewWillLayoutSubviews = { [weak self] in
+            guard let self else { return }
             self.mapView.frame = self.view.bounds
             let bottomMargin: CGFloat
             if UIDevice.current.userInterfaceIdiom == .pad {
@@ -115,14 +120,15 @@ class MapItemPickerViewController:
     }()
     
     private lazy var cancelButton: UIBarButtonItem = {
-        let cancelAction = UIAction { _ in
-            self.onDismiss?(nil)
+        let cancelAction = UIAction { [weak self] _ in
+            self?.onDismiss?(nil)
         }
         return UIBarButtonItem(systemItem: .cancel, primaryAction: cancelAction, menu: nil)
     }()
     
     private lazy var selectionButton: UIBarButtonItem = {
-        let selectionAction = UIAction { _ in
+        let selectionAction = UIAction { [weak self] _ in
+            guard let self else { return }
             if
                 let index = self.selectedAnnotationIndex,
                 let response = self.searchResponse?.mapItems[index]
@@ -195,6 +201,8 @@ class MapItemPickerViewController:
             self.locationManager.requestWhenInUseAuthorization()
         })
         locationManager.requestWhenInUseAuthorization()
+        
+        present(searchNavigationController, animated: true)
     }
     
     private lazy var mapView: MKMapView = {
@@ -227,8 +235,8 @@ class MapItemPickerViewController:
         searchRequest.region =  searchRegion
         searchRequest.naturalLanguageQuery = text
         let search = MKLocalSearch(request: searchRequest)
-        search.start { (response, error) in
-            self.searchResponse = response
+        search.start { [weak self] (response, error) in
+            self?.searchResponse = response
         }
     }
     
