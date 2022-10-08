@@ -33,7 +33,9 @@ class MapItemPickerViewController:
         searchNavigationController.presentationController?.delegate = self
         if let sheet = searchNavigationController.sheetPresentationController {
 #if !targetEnvironment(macCatalyst)
-            sheet.prefersGrabberVisible = true
+            // Work-around to avoid memory leak.
+            // The grabber causes a _UIPageSheetPresentationController to prevent the presented view controller from being released after being dismissed.
+            //sheet.prefersGrabberVisible = true
 #endif
             sheet.delegate = self
             sheet.detents = [.medium(), .large()]
