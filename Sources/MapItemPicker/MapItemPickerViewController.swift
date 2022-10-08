@@ -199,6 +199,8 @@ class MapItemPickerViewController:
             self.locationManager.requestWhenInUseAuthorization()
         })
         locationManager.requestWhenInUseAuthorization()
+        
+        present(searchNavigationController, animated: true)
     }
     
     private lazy var mapView: MKMapView = {
