@@ -20,4 +20,13 @@ extension View {
     }
 }
 
+// allow previews
+@available(iOS 15.0, *)
+struct MapItemPickerSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        Spacer()
+            .mapItemPicker(isPresented: .constant(true))
+    }
+}
+
 #endif
