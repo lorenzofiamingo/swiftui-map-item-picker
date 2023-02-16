@@ -143,8 +143,15 @@ class MapItemPickerViewController:
     
     private var searchResponse: MKLocalSearch.Response? {
         didSet {
+            searchResponseTableViewController.removeLoadingScreen()
             searchResponseTableViewController.searchResponse = searchResponse
-            annotations = searchResponse?.mapItems.map(\.placemark) ?? []
+            annotations = searchResponse?.mapItems.map { item in
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = item.placemark.coordinate
+                annotation.title = item.name
+                annotation.subtitle = item.placemark.title
+                return annotation
+            } ?? []
             if annotations.count > 0 {
                 selectedAnnotationIndex = 0
             }
@@ -238,10 +245,21 @@ class MapItemPickerViewController:
         search.start { [weak self] (response, error) in
             self?.searchResponse = response
         }
+
+        // clear response table and enable loading spinner
+        searchResponseTableViewController.setLoadingScreen()
+        searchResponseTableViewController.searchResponse = nil
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchResponseTableViewController.tableView.isHidden = false
+    }
+
+    // if search text is empty, clear response table
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        if searchBar.text?.isEmpty != nil {
+            searchResponseTableViewController.searchResponse = nil
+        }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -249,6 +267,9 @@ class MapItemPickerViewController:
             searchResponseTableViewController.tableView.isHidden = true
         } else {
             searchResponseTableViewController.tableView.isHidden = false
+            // after search bar clear, also clear results table and map
+            searchResponseTableViewController.searchResponse = nil
+            mapView.removeAnnotations(mapView.annotations)
         }
     }
 
