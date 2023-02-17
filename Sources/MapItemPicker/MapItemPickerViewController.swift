@@ -197,8 +197,8 @@ class MapItemPickerViewController:
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let name = UIApplication.willEnterForegroundNotification
-        foregroundRestorationObserver = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: { [unowned self] (_) in
-            self.locationManager.requestWhenInUseAuthorization()
+        foregroundRestorationObserver = NotificationCenter.default.addObserver(forName: name, object: nil, queue: nil, using: { [weak self] (_) in
+            self?.locationManager.requestWhenInUseAuthorization()
         })
         locationManager.requestWhenInUseAuthorization()
         
